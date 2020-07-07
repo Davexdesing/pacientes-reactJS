@@ -1,25 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, useState } from 'react';
+import Formulario from './components/Formulario'
+import Cita from './components/Cita'
 
 function App() {
+
+  const [citas, saveCitas] = useState([]);
+
+  // funcion que tome las citas
+
+  const crearCita = cita => {
+    saveCitas([
+      ...citas,
+      cita
+    ]);
+  }
+
+  const deleteCita = id => {
+    const nuevaCita = citas.filter(cita => cita.id !== id);
+
+    saveCitas(nuevaCita);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+    <h1>Administrador de pacientes</h1>
+      <div className="container">
+        <div className="row">
+          <div className="one-half column">
+            <Formulario
+              crearCita={crearCita}
+              />
+          </div>
+          <div className="one-half column">
+              <h1>Citas</h1>
+            {citas.map(cita => (
+              <Cita
+                key={cita.id}
+                cita={cita}
+                deleteCita={deleteCita}
+                 />
+            ))}
+          </div>
+        </div>
+      </div>
+    </Fragment>
   );
 }
 
